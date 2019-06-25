@@ -16,6 +16,11 @@ import argparse
 import time
 import homie
 import bluetooth._bluetooth as bluez
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 dev_id = 0
 FREQUENCY_SECONDS = 600

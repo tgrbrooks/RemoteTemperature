@@ -26,12 +26,12 @@ dev_id = 0
 FREQUENCY_SECONDS = 600
 
 def main(configfile='homie-bluetooth.json'):
-    print "Loading from: " + configfile
-    with open( configfile ) as json_file:  
-        config = json.load( json_file )
-        
-    print config
-    
+	print "Loading from: " + configfile
+	with open( configfile ) as json_file:  
+		config = json.load( json_file )
+
+	print config
+
 	Homie = homie.Homie( config )
 	Homie.setFirmware("bluemaestro-temperature","1.0.0")
 	Homie.setup()

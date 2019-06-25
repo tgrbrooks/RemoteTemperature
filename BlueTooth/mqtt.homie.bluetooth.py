@@ -17,6 +17,10 @@ import time
 import logging
 import homie
 import bluetooth._bluetooth as bluez
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 dev_id = 0
 FREQUENCY_SECONDS = 600
@@ -39,7 +43,13 @@ def updatenode(Homie, nodelist,mac,nodevalue,newvalue):
 
 
 def main(configfile='homie-bluetooth.json'):
-	Homie = homie.Homie(configfile)
+	print "Loading from: " + configfile
+	with open( configfile ) as json_file:  
+		config = json.load( json_file )
+
+	print config
+
+	Homie = homie.Homie( config )
 	Homie.setFirmware("bluemaestro-temperature","1.0.0")
 	Homie.setup()
         json_data=open(configfile).read()

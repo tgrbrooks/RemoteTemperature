@@ -13,13 +13,13 @@
 #	- uses "simple" MQTT with topics defined in config file
 #	- MQTT server info is defined in config file
 
-#import bluemaestroscan  #specific bluemaestro tempo disc scanner
+import bluemaestroscan  #specific bluemaestro tempo disc scanner
 import json
 import sys
 import argparse
 import time
 import logging
-#import bluetooth._bluetooth as bluez
+import bluetooth._bluetooth as bluez
 import logging
 import paho.mqtt.client as mqtt # pip install paho-mqtt
 import paho.mqtt.publish as publish

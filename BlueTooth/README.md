@@ -61,10 +61,12 @@ Info about running Python scripts as service: <http://www.diegoacuna.me/how-to-r
 
 1. Copy the `bluemaestro-mqtt.service` file to `/lib/systemd/system/`.
 2. Run:
-        sudo chmod 644 /lib/systemd/system/bluemaestro-mqtt.service
-        chmod +x /home/openhabian/OpenHAB-Scripts/BlueTooth/mqtt.bluetooth.loop.py
-        sudo systemctl daemon-reload
-        sudo systemctl enable bluemaestro-mqtt.service
-        sudo systemctl start bluemaestro-mqtt.service
 
-xx
+    ```sudo chmod 644 /lib/systemd/system/bluemaestro-mqtt.service
+    chmod +x /home/openhabian/OpenHAB-Scripts/BlueTooth/mqtt.bluetooth.loop.py
+    sudo systemctl daemon-reload
+    sudo systemctl enable bluemaestro-mqtt.service
+    sudo systemctl start bluemaestro-mqtt.service
+    ```
+
+🐯

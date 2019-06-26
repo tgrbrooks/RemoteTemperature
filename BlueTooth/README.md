@@ -51,3 +51,20 @@ Sample `Config.json` file:
 The `mqtt.bluetooth.loop.py` file assumes the MQTT server uses username/password authentication with credentials specified in the config file.
 
 Also, the connection is opened using TLS with CA certificate path specified in the `MQTT.TLS_CERT` parameter.
+
+## Running as service
+
+### Permissions
+To grant permissions to the BLE subsystem/driver, read here: <https://stackoverflow.com/a/42306883/1632704>
+
+Info about running Python scripts as service: <http://www.diegoacuna.me/how-to-run-a-script-as-a-service-in-raspberry-pi-raspbian-jessie/>
+
+1. Copy the `bluemaestro-mqtt.service` file to `/lib/systemd/system/`.
+2. Run:
+        sudo chmod 644 /lib/systemd/system/bluemaestro-mqtt.service
+        chmod +x /home/openhabian/OpenHAB-Scripts/BlueTooth/mqtt.bluetooth.loop.py
+        sudo systemctl daemon-reload
+        sudo systemctl enable bluemaestro-mqtt.service
+        sudo systemctl start bluemaestro-mqtt.service
+
+xx

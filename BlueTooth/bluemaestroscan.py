@@ -21,7 +21,7 @@ DEBUG = True
 # should be used for BLE. Always start a struct.pack() format string with "<"
 
 # Modified 2019-06 by JWJ:
-#	- now returns an array of objects with temp, humidity, dewpoint, … so multiple devices/advertisements can be found
+#	- now returns an array of objects with temp, humidity, dewpoint, so multiple devices/advertisements can be found
 
 import collections
 import os

@@ -100,8 +100,6 @@ def main( configfile='homie-bluetooth.json' ):
 			returnedList = bluemaestroscan.parse_events( sock, 10 )
 			print "-------------------------------------------------------------------------------------------------------"
 			logging.info("-------------------------------------------------------------------------------------------------------")
-			mac = ""
-			temp = 0
 			currentdate = time.strftime('%Y-%m-%d %H:%M:%S')
 			print('Date Time:   {0}'.format(currentdate))
 			logging.info('Date Time:   {0}'.format(currentdate))
@@ -129,9 +127,9 @@ def main( configfile='homie-bluetooth.json' ):
 					time.sleep(60)
 					continue
 
-			time.sleep(FREQUENCY_SECONDS)
+			time.sleep( FREQUENCY_SECONDS )
 
-		except Exception,e:
+		except Exception as e:
 	       	# Error appending data, most likely because credentials are stale.
 			# Null out the worksheet so a login is performed at the top of the loop.
 			print('Append error, logging in again: ' + str(e))
@@ -148,5 +146,4 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, SystemExit):
 		mqttc.loop_stop()
 		mqttc.disconnect()
-		print "quitting."
-
+		print "Top-level exception - terminating."

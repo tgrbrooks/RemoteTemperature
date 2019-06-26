@@ -12,7 +12,7 @@
 import bluemaestroscan  #specific bluemaestro tempo disc scanner
 import sys
 import time
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as mqtt # pip install paho-mqtt
 import bluetooth._bluetooth as bluez
 
 dev_id = 0

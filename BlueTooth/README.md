@@ -20,3 +20,34 @@ _Cloned from <https://github.com/psyciknz/OpenHAB-Scripts>_
 Config files are _symmetrically_ encrypted with `git-crypt`. Key is in 1PW.
 
 Refer to git-crypt docs for info about initializing and unlocking.
+
+### Config.json
+
+Sample `Config.json` file:
+
+	{
+		"MQTT": {
+			"HOST": "something.cloudmqtt.com",
+			"PORT": 12343,
+			"KEEPALIVE": 10,
+			"USERNAME": "username",
+			"PASSWORD": "password",
+			"TLS_CERT": "/etc/ssl/certs/ca-certificates.crt"
+		},
+		"topics": {
+			"temp": "/bluemaestro/temp",
+			"humidity": "/bluemaestro/humidity",
+			"dewpoint": "/bluemaestro/dewpoint",
+			"battery": "/bluemaestro/battery"
+		},
+		"bluetooth": {
+			"frequency": 1,
+			"log": "ble-log.txt"
+		}
+	}
+
+### MQTT auth
+
+The `mqtt.bluetooth.loop.py` file assumes the MQTT server uses username/password authentication with credentials specified in the config file.
+
+Also, the connection is opened using TLS with CA certificate path specified in the `MQTT.TLS_CERT` parameter.

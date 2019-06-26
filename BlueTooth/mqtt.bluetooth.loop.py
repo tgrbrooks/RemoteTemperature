@@ -84,11 +84,10 @@ def main( configfile='homie-bluetooth.json' ):
 	}
 
 	tls = {
-  		'ca_certs':"/Users/jenswilly/Downloads/comodo-rsa-domain-validation-sha-2-w-root.ca-bundle.crt",
-  		'tls_version':ssl.PROTOCOL_TLSv1
+  		'ca_certs':config["MQTT"]["TLS_CERT"]
 	}
 
-	publish.single( config["topics"]["humidity"], payload=54.2, hostname=MOSQUITTO_HOST, port=MOSQUITTO_PORT, keepalive=MOSQUITTO_KEEPALIVE, auth=auth, tls=tls, protocol=mqtt.MQTTv311 )
+	publish.single( config["topics"]["humidity"], payload=55.2, hostname=MOSQUITTO_HOST, port=MOSQUITTO_PORT, keepalive=MOSQUITTO_KEEPALIVE, auth=auth, tls=tls, protocol=mqtt.MQTTv311 )
 	print "Done2"
 	# JWJ test
 	#print "Connection to {0}:{1}".format( MOSQUITTO_HOST, MOSQUITTO_PORT )

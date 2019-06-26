@@ -4,7 +4,7 @@
 # Unsure if there are any other Blue Maestro products that it would work with.
 # David@andc.nz 15/12/2016
 
-DEBUG = True
+DEBUG = False
 
 # BLE Scanner based on from JCS 06/07/14
 # BLE scanner based on https://github.com/adamf/BLE/blob/master/ble-scanner.py

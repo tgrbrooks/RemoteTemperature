@@ -127,7 +127,11 @@ def main( configfile='homie-bluetooth.json' ):
 					time.sleep(60)
 					continue
 
-			time.sleep( FREQUENCY_SECONDS )
+			# If we didn't find any matching BLE devices, wait 1 sec.; otherwise wait the speficied amount
+			if len( returnedList ) > 0:
+				time.sleep( FREQUENCY_SECONDS )
+			else:
+				time.sleep( 1 )
 
 		except Exception as e:
 	       	# Error appending data, most likely because credentials are stale.

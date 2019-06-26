@@ -5,6 +5,7 @@
 # David@andc.nz 15/12/2016
 
 DEBUG = True
+
 # BLE Scanner based on from JCS 06/07/14
 # BLE scanner based on https://github.com/adamf/BLE/blob/master/ble-scanner.py
 # BLE scanner, based on https://code.google.com/p/pybluez/source/browse/trunk/examples/advanced/inquiry-with-rssi.py
@@ -18,6 +19,9 @@ DEBUG = True
 
 # NOTE: Python's struct.pack() will add padding bytes unless you make the endianness explicit. Little endian
 # should be used for BLE. Always start a struct.pack() format string with "<"
+
+# Modified 2019-06 by JWJ:
+#	- now returns an array of objects with temp, humidity, dewpoint, … so multiple devices/advertisements can be found
 
 import collections
 import os
@@ -128,9 +132,9 @@ def parse_events(sock, loop_count=100):
     bluez.hci_filter_all_events(flt)
     bluez.hci_filter_set_ptype(flt, bluez.HCI_EVENT_PKT)
     sock.setsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, flt )
-    done = False
-    results = []
-    myFullList = {}
+    done = False	# Not used? -JWJ
+    results = []	# Not used? -JWJ
+    myFullList = []
     for i in range(0, loop_count):
         pkt = sock.recv(255)
         ptype, event, plen = struct.unpack("BBB", pkt[:3])
@@ -151,51 +155,54 @@ def parse_events(sock, loop_count=100):
                 num_reports = struct.unpack("B", pkt[0])[0]
                 report_pkt_offset = 0
                 for i in range(0, num_reports):
-		  company = returnstringpacket(pkt[report_pkt_offset + 15: report_pkt_offset + 17])
+		  company = returnstringpacket( pkt[report_pkt_offset + 15: report_pkt_offset + 17] )
 		  print "==============================================================================================================="
 		  if (DEBUG == True):
 			  print "\tfullpacket: ", printpacket(pkt)
 
 		  if (company == "3301"):
+			  sensor = {}
 			  print "\tCompany: ",company
 			  udid = returnstringpacket(pkt[report_pkt_offset + 22: report_pkt_offset - 6])
 			  print "\tUDID: ", udid
-			  myFullList["udid"] = udid
+			  sensor["udid"] = udid
 
 			  print "\tMAJOR: ", printpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4])
 			  print "\tMINOR: ", printpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2])
 			  print "\tMAC address: ", packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
 			  mac = returnstringpacket(pkt[report_pkt_offset + 3: report_pkt_offset + 9])
-			  myFullList["mac"] = mac
+			  sensor["mac"] = mac
 			  print "\tMAC Address string: ", returnstringpacket(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
 			  tempString = returnstringpacket(pkt[report_pkt_offset + 23: report_pkt_offset + 25])
 			  print "\tTemp: " , tempString 
 			  temp = float(returnnumberpacket(pkt[report_pkt_offset + 23:report_pkt_offset + 25]))/10
 			  print "\tTemp: " , temp
-			  myFullList["temp"] = temp
+			  sensor["temp"] = temp
 
 			  print "\tHumidity: " ,printpacket(pkt[report_pkt_offset + 25:report_pkt_offset + 27])
 			  humidity = float(returnnumberpacket(pkt[report_pkt_offset + 25:report_pkt_offset + 27]))/10
 			  print "\tHumidity: " ,humidity 
-			  myFullList["humidity"] = humidity 
+			  sensor["humidity"] = humidity 
 
 
 			  dewpoint = float(returnnumberpacket(pkt[report_pkt_offset + 27:report_pkt_offset + 29]))/10
 			  print "\tDewpoint: " ,dewpoint 
-			  myFullList["dewpoint"] = dewpoint
+			  sensor["dewpoint"] = dewpoint
 
 			  nameLength = int(returnstringpacket(pkt[report_pkt_offset + 32]))
 			  print "\tNameLength: ",nameLength
 
 			  name = returnstringpacket(pkt[report_pkt_offset + 33:report_pkt_offset + (33+nameLength-1)])
 			  print "\tName: %s %d " % (name.decode("hex"),nameLength)
-			  myFullList["name"] = name.decode("hex")
+			  sensor["name"] = name.decode("hex")
 
 			  print "\tBattery: " ,printpacket(pkt[report_pkt_offset + 18:report_pkt_offset + 19])
 			  battery = float(float(returnnumberpacket(pkt[report_pkt_offset + 18]) / float(25500) ) * 100)
 			  print "\tBattery: " ,battery
-			  myFullList["battery"] = battery
+			  sensor["battery"] = battery
 			  done = True
+
+			  myFullList.append( sensor )
 		  else:
 			  print "\tNon blue maestro packet found"
     sock.setsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, old_filter )

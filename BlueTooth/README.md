@@ -39,6 +39,7 @@ Sample `Config.json` file:
 			"humidity": "/bluemaestro/humidity",
 			"dewpoint": "/bluemaestro/dewpoint",
 			"battery": "/bluemaestro/battery"
+			"timestamp": "bluemaestro/timestamp"
 		},
 		"bluetooth": {
 			"frequency": 1,

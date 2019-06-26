@@ -97,8 +97,8 @@ def main( configfile='homie-bluetooth.json' ):
 	while True:
 		try:
 			returnedList = bluemaestroscan.parse_events( sock, 10 )
-			currentdate = time.strftime('%Y-%m-%d %H:%M:%S')
-			print('Date Time:   {0}'.format(currentdate))
+			currentdatetime = time.strftime( "%Y-%m-%dT%H:%M:%S" )	# 2019-06-25T23:59:00
+			print('Date Time:   {0}'.format( currentdatetime ))
 			print "number of beacons found {0}".format(len(returnedList))
 
 			for beacon in returnedList:
@@ -114,6 +114,7 @@ def main( configfile='homie-bluetooth.json' ):
 					mqttc.publish( config["topics"]["humidity"], humidity )
 					mqttc.publish( config["topics"]["dewpoint"], dewpoint )
 					mqttc.publish( config["topics"]["battery"], battery )
+					mqttc.publish( config["topics"]["timestamp"], currentdatetime )
 
 				except Exception,e:
 					# Null out the worksheet so a login is performed at the top of the loop.

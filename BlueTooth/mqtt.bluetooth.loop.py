@@ -74,7 +74,7 @@ def main( configfile='homie-bluetooth.json' ):
 	# Set freq and log filename
 	FREQUENCY_SECONDS =config["bluetooth"]["frequency"]
 	LOG = config["bluetooth"]["log"]
-	logging.basicConfig(filename=LOG, level=logging.INFO,format='%(asctime)s %(levelname)s %(message)s')   
+	logging.basicConfig(filename=LOG, level=logging.ERROR,format='%(asctime)s %(levelname)s %(message)s')   
 	
 	# Set MQTT credentials, open connection and start background network loop
 	print "Connecting to {0}:{1}".format( MOSQUITTO_HOST, MOSQUITTO_PORT )
@@ -98,8 +98,6 @@ def main( configfile='homie-bluetooth.json' ):
 	while True:
 		try:
 			returnedList = bluemaestroscan.parse_events( sock, 10 )
-			print "-------------------------------------------------------------------------------------------------------"
-			logging.info("-------------------------------------------------------------------------------------------------------")
 			currentdate = time.strftime('%Y-%m-%d %H:%M:%S')
 			print('Date Time:   {0}'.format(currentdate))
 			logging.info('Date Time:   {0}'.format(currentdate))

@@ -85,11 +85,10 @@ def main( configfile='homie-bluetooth.json' ):
 
 	try:
 		sock = bluez.hci_open_dev(dev_id)
-		logging.info("ble thread started")
 
 	except:
 		print "error accessing bluetooth device..."
-		logging.info("error accessing bluetooth device...")
+		logging.error("error accessing bluetooth device...")
 	    	sys.exit(1)
 	
 	bluemaestroscan.hci_le_set_scan_parameters(sock)
@@ -100,9 +99,7 @@ def main( configfile='homie-bluetooth.json' ):
 			returnedList = bluemaestroscan.parse_events( sock, 10 )
 			currentdate = time.strftime('%Y-%m-%d %H:%M:%S')
 			print('Date Time:   {0}'.format(currentdate))
-			logging.info('Date Time:   {0}'.format(currentdate))
 			print "number of beacons found {0}".format(len(returnedList))
-			logging.info("number of beacons found {0}".format(len(returnedList)))
 
 			for beacon in returnedList:
 				# Publish to the MQTT channel

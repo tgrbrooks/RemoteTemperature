@@ -1,4 +1,3 @@
-This repository is my Collection of scripts used for OpenHAB (or any other purpose).  
-They will most likely use MQTT as a transport, and therfore will be quite generic.  
+This is a fork of <https://github.com/psyciknz/OpenHAB-Scripts>.
 
-They are intended for use on remote devices (raspberry PI for example) for sending sensor information  or responding to commands.
+Most files have been removed and only the ones I'm using remains. They are all in the `BlueTooth` folder along with a more detailed readme.

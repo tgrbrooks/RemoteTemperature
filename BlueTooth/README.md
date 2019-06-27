@@ -49,7 +49,7 @@ Sample `Config.json` file:
 
 The `mqtt.bluetooth.loop.py` file assumes the MQTT server uses username/password authentication with credentials specified in the config file.
 
-Also, the connection is opened using TLS with CA certificate path specified in the `MQTT.TLS_CERT` parameter.
+Also, the connection is opened using TLS with CA certificate path specified in the `MQTT.TLS_CERT` parameter. On Linux-based systems, this is usually `/etc/ssl/certs/ca-certificates.crt`. Mac OS, however, uses Keychain to handle certififactes so you need to download the CA certificate and specify the path.
 
 ## Permissions
 To grant permissions to the BLE subsystem/driver to run as non-admin user, read here: <https://stackoverflow.com/a/42306883/1632704>.

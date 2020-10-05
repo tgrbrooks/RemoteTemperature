@@ -1,5 +1,15 @@
 _Cloned from <https://github.com/psyciknz/OpenHAB-Scripts>_
 
+# Added stuff for setup
+install dependencies
+`pip3 install gspread pybluez`
+
+copy google api json file to `.config/gspread/service_account.json`
+
+Set up pybluez/bluetooth on the pi
+
+Change location of files in `.service` files
+
 # Blue Maestro BLE to MQTT publisher
 
 This repository contains Python scripts for scanning for Blue Maestro BLE temperature sensors and publishing to MQTT.

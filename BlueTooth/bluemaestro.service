@@ -1,0 +1,11 @@
+[Unit]
+Description=Bluemaestro BLE advertisement MQTT service
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/openhabian/OpenHAB-Scripts/BlueTooth/bluetooth.loop.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

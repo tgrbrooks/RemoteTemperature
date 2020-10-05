@@ -91,23 +91,6 @@ def hci_disable_le_scan(sock):
     hci_toggle_le_scan(sock, 0x00)
 
 def hci_toggle_le_scan(sock, enable):
-# hci_le_set_scan_enable(dd, 0x01, filter_dup, 1000);
-# memset(&scan_cp, 0, sizeof(scan_cp));
- #uint8_t         enable;
- #       uint8_t         filter_dup;
-#        scan_cp.enable = enable;
-#        scan_cp.filter_dup = filter_dup;
-#
-#        memset(&rq, 0, sizeof(rq));
-#        rq.ogf = OGF_LE_CTL;
-#        rq.ocf = OCF_LE_SET_SCAN_ENABLE;
-#        rq.cparam = &scan_cp;
-#        rq.clen = LE_SET_SCAN_ENABLE_CP_SIZE;
-#        rq.rparam = &status;
-#        rq.rlen = 1;
-
-#        if (hci_send_req(dd, &rq, to) < 0)
-#                return -1;
     cmd_pkt = struct.pack("<BB", enable, 0x00)
     bluez.hci_send_cmd(sock, OGF_LE_CTL, OCF_LE_SET_SCAN_ENABLE, cmd_pkt)
 
@@ -140,11 +123,11 @@ def parse_events(sock, loop_count=100):
         ptype, event, plen = struct.unpack("BBB", pkt[:3])
         #print "--------------" 
         if event == bluez.EVT_INQUIRY_RESULT_WITH_RSSI:
-		i =0
+            i =0
         elif event == bluez.EVT_NUM_COMP_PKTS:
-                i =0 
+            i =0 
         elif event == bluez.EVT_DISCONN_COMPLETE:
-                i =0 
+            i =0 
         elif event == LE_META_EVENT:
             subevent, = struct.unpack("B", pkt[3])
             pkt = pkt[4:]
@@ -155,56 +138,39 @@ def parse_events(sock, loop_count=100):
                 num_reports = struct.unpack("B", pkt[0])[0]
                 report_pkt_offset = 0
                 for i in range(0, num_reports):
-		  company = returnstringpacket( pkt[report_pkt_offset + 15: report_pkt_offset + 17] )
+                    company = returnstringpacket( pkt[report_pkt_offset + 15: report_pkt_offset + 17] )
 
-		  if (DEBUG == True):
-			  print "\tfullpacket: ", printpacket(pkt)
+                    if (DEBUG == True):
+                        print("\tfullpacket: ", printpacket(pkt))
 
-		  if (company == "3301"):
-			  sensor = {}
-#			  print "\tCompany: ",company
-			  udid = returnstringpacket(pkt[report_pkt_offset + 22: report_pkt_offset - 6])
-#			  print "\tUDID: ", udid
-			  sensor["udid"] = udid
+                    if (company == "3301"):
+                        sensor = {}
+                        udid = returnstringpacket(pkt[report_pkt_offset + 22: report_pkt_offset - 6])
+                        sensor["udid"] = udid
 
-#			  print "\tMAJOR: ", printpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4])
-#			  print "\tMINOR: ", printpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2])
-#			  print "\tMAC address: ", packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
-			  mac = returnstringpacket(pkt[report_pkt_offset + 3: report_pkt_offset + 9])
-			  sensor["mac"] = mac
-#			  print "\tMAC Address string: ", returnstringpacket(pkt[report_pkt_offset + 3:report_pkt_offset + 9])
-			  tempString = returnstringpacket(pkt[report_pkt_offset + 23: report_pkt_offset + 25])
-#			  print "\tTemp: " , tempString 
-			  temp = float(returnnumberpacket(pkt[report_pkt_offset + 23:report_pkt_offset + 25]))/10
-#			  print "\tTemp: " , temp
-			  sensor["temp"] = temp
+                        mac = returnstringpacket(pkt[report_pkt_offset + 3: report_pkt_offset + 9])
+                        sensor["mac"] = mac
+                        tempString = returnstringpacket(pkt[report_pkt_offset + 23: report_pkt_offset + 25])
+                        temp = float(returnnumberpacket(pkt[report_pkt_offset + 23:report_pkt_offset + 25]))/10
+                        sensor["temp"] = temp
 
-#			  print "\tHumidity: " ,printpacket(pkt[report_pkt_offset + 25:report_pkt_offset + 27])
-			  humidity = float(returnnumberpacket(pkt[report_pkt_offset + 25:report_pkt_offset + 27]))/10
-#			  print "\tHumidity: " ,humidity 
-			  sensor["humidity"] = humidity 
+                        humidity = float(returnnumberpacket(pkt[report_pkt_offset + 25:report_pkt_offset + 27]))/10
+                        sensor["humidity"] = humidity 
 
 
-			  dewpoint = float(returnnumberpacket(pkt[report_pkt_offset + 27:report_pkt_offset + 29]))/10
-#			  print "\tDewpoint: " ,dewpoint 
-			  sensor["dewpoint"] = dewpoint
+                        dewpoint = float(returnnumberpacket(pkt[report_pkt_offset + 27:report_pkt_offset + 29]))/10
+                        sensor["dewpoint"] = dewpoint
 
-			  nameLength = int(returnstringpacket(pkt[report_pkt_offset + 32]))
-#			  print "\tNameLength: ",nameLength
+                        nameLength = int(returnstringpacket(pkt[report_pkt_offset + 32]))
 
-			  name = returnstringpacket(pkt[report_pkt_offset + 33:report_pkt_offset + (33+nameLength-1)])
-#			  print "\tName: %s %d " % (name.decode("hex"),nameLength)
-			  sensor["name"] = name.decode("hex")
+                        name = returnstringpacket(pkt[report_pkt_offset + 33:report_pkt_offset + (33+nameLength-1)])
+                        sensor["name"] = name.decode("hex")
 
-#			  print "\tBattery: " ,printpacket(pkt[report_pkt_offset + 18:report_pkt_offset + 19])
-			  battery = float(float(returnnumberpacket(pkt[report_pkt_offset + 18]) / float(25500) ) * 100)
-#			  print "\tBattery: " ,battery
-			  sensor["battery"] = battery
-			  done = True
+                        battery = float(float(returnnumberpacket(pkt[report_pkt_offset + 18]) / float(25500) ) * 100)
+                        sensor["battery"] = battery
+                        done = True
 
-			  myFullList.append( sensor )
-#		  else:
-#			  print "\tNon blue maestro packet found"
+                        myFullList.append( sensor )
     sock.setsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, old_filter )
     return myFullList
 

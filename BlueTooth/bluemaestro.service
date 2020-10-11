@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python /home/openhabian/OpenHAB-Scripts/BlueTooth/bluetooth.loop.py
+ExecStart=/usr/bin/python /home/pi/Documents/RemoteTemperature/BlueTooth/bluetooth_loop.py
 Restart=on-abort
 
 [Install]
